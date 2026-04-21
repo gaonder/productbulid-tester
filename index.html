@@ -19,9 +19,15 @@
         </header>
 
         <div class="test-area">
-            <div id="webcam-container"></div>
+            <div id="image-upload-container">
+                <label for="image-input" class="upload-label">
+                    <span class="upload-icon">📸</span>
+                    <span class="upload-text">사진을 업로드하거나 드래그하세요</span>
+                </label>
+                <input type="file" id="image-input" accept="image/*" style="display: none;">
+                <img id="image-preview" src="" alt="미리보기" style="display: none;">
+            </div>
             <div id="label-container"></div>
-            <button type="button" id="start-btn" onclick="init()">테스트 시작하기</button>
         </div>
 
         <div class="divider"></div>
