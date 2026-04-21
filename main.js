@@ -1,5 +1,5 @@
 // Teachable Machine 모델 URL
-const URL = "https://teachablemachine.withgoogle.com/models/mgornywd/";
+const URL = "https://teachablemachine.withgoogle.com/models/qfMH7oUjN/";
 
 let model, labelContainer, maxPredictions;
 const imageInput = document.getElementById('image-input');
