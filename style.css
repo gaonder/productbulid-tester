@@ -166,3 +166,8 @@ h1 {
     transform: translateY(-2px);
     opacity: 0.9;
 }
+
+.comments-section {
+    margin-top: 2rem;
+    text-align: left;
+}
