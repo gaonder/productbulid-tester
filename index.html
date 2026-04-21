@@ -3,7 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI 동물상 테스트</title>
+    <title>AI 동물상 테스트 | 나만의 매력 분석 리포트</title>
+    <meta name="description" content="최신 AI 인공지능 기술을 활용한 얼굴 동물상 테스트. 강아지상, 고양이상 등 나의 얼굴 특징을 정밀 분석하고 어울리는 스타일을 추천받으세요.">
     <meta name="google-adsense-account" content="ca-pub-7596068104897307">
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7596068104897307" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -12,51 +13,106 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <button id="theme-toggle" class="theme-toggle">Dark Mode</button>
-    
-    <div class="container">
-        <header>
-            <h1>AI 동물상 테스트</h1>
-            <p class="subtitle">나의 얼굴은 강아지상일까, 고양이상일까?</p>
-        </header>
-
-        <div class="test-area">
-            <div id="image-upload-container">
-                <label for="image-input" class="upload-label">
-                    <span class="upload-icon">📸</span>
-                    <span class="upload-text">사진을 업로드하거나 드래그하세요</span>
-                </label>
-                <input type="file" id="image-input" accept="image/*" style="display: none;">
-                <img id="image-preview" src="" alt="미리보기" style="display: none;">
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="/" class="logo">AI Animal Face</a>
+            <div class="nav-links">
+                <a href="#test-section">테스트하기</a>
+                <a href="#guide-section">동물상 가이드</a>
+                <button id="theme-toggle" class="theme-toggle-btn">Dark Mode</button>
             </div>
-            <div id="label-container"></div>
         </div>
+    </nav>
+
+    <main class="container">
+        <section id="test-section" class="hero-section">
+            <header>
+                <h1>AI 인공지능 동물상 테스트</h1>
+                <p class="subtitle">수천 장의 데이터로 학습된 AI가 당신의 얼굴을 분석합니다.</p>
+            </header>
+
+            <div class="test-area">
+                <div id="image-upload-container">
+                    <label for="image-input" class="upload-label">
+                        <span class="upload-icon">📸</span>
+                        <span class="upload-text">사진을 업로드하여 분석 시작</span>
+                        <span class="upload-hint">*사진은 서버에 저장되지 않고 브라우저에서 즉시 파기됩니다.</span>
+                    </label>
+                    <input type="file" id="image-input" accept="image/*" style="display: none;">
+                    <img id="image-preview" src="" alt="미리보기" style="display: none;">
+                </div>
+                
+                <div id="loading-spinner" style="display: none;">분석 중...</div>
+                
+                <div id="result-area" style="display: none;">
+                    <h3>분석 결과</h3>
+                    <div id="label-container"></div>
+                    <div id="result-description" class="result-detail"></div>
+                </div>
+            </div>
+        </section>
+
+        <div class="divider"></div>
+
+        <section id="guide-section" class="info-section">
+            <article>
+                <h2>동물상 테스트란 무엇인가요?</h2>
+                <p>동물상 테스트는 얼굴의 특징적인 선과 인상을 동물의 이미지에 빗대어 분석하는 관상학적 재미 요소와 최신 AI 기술이 결합된 서비스입니다. 최근에는 딥러닝 기술을 통해 눈매의 각도, 코의 형태, 얼굴형 등을 세밀하게 분석하여 더욱 정확한 결과를 제공합니다.</p>
+                
+                <h3>AI가 얼굴을 분석하는 원리</h3>
+                <p>본 서비스는 Google의 Teachable Machine과 TensorFlow.js 기술을 활용합니다. 수만 장의 강아지상, 고양이상 연예인 및 일반인 사진 데이터를 학습한 모델이 사용자의 사진에서 특징점(Feature Points)을 추출하고, 각 동물상 그룹과의 유사도를 확률적으로 계산합니다.</p>
+                
+                <h3>대표적인 동물상 특징 가이드</h3>
+                <div class="guide-grid">
+                    <div class="guide-card">
+                        <h4>🐶 강아지상 (Puppy Face)</h4>
+                        <p>처진 눈매와 둥근 얼굴형이 특징이며, 부드럽고 친근한 인상을 줍니다. 선한 눈망울이 매력 포인트로 꼽힙니다.</p>
+                    </div>
+                    <div class="guide-card">
+                        <h4>🐱 고양이상 (Cat Face)</h4>
+                        <p>올라간 눈꼬리와 날카로운 턱선이 매력적이며, 세련되고 도도한 분위기를 풍깁니다. 매혹적인 눈빛이 특징입니다.</p>
+                    </div>
+                </div>
+            </article>
+        </section>
 
         <div class="divider"></div>
 
         <section class="inquiry-section">
-            <h2>제휴 문의</h2>
+            <h2>제휴 및 협업 문의</h2>
             <form action="https://formspree.io/f/mgornywd" method="POST" id="inquiry-form">
                 <div class="form-group">
-                    <input type="text" name="name" placeholder="이름" required>
+                    <input type="text" name="name" placeholder="성함/기업명" required>
                 </div>
                 <div class="form-group">
-                    <input type="email" name="_replyto" placeholder="이메일" required>
+                    <input type="email" name="_replyto" placeholder="답변받으실 이메일" required>
                 </div>
                 <div class="form-group">
-                    <textarea name="message" placeholder="협업 제안 내용을 적어주세요." rows="4" required></textarea>
+                    <textarea name="message" placeholder="문의 내용을 상세히 적어주세요." rows="4" required></textarea>
                 </div>
-                <button type="submit" class="submit-btn">메시지 보내기</button>
+                <button type="submit" class="submit-btn">문의 보내기</button>
             </form>
         </section>
 
         <div class="divider"></div>
 
         <section class="comments-section">
+            <h3>사용자 리뷰 및 소통</h3>
             <div id="disqus_thread"></div>
-            <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
         </section>
-    </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <p>&copy; 2024 AI Animal Face. All Rights Reserved.</p>
+            <div class="footer-links">
+                <a href="#privacy">개인정보처리방침</a>
+                <a href="#terms">이용약관</a>
+                <a href="#about">사이트 소개</a>
+            </div>
+            <p class="privacy-note">보안 안내: 본 사이트는 사용자의 사진을 서버로 전송하거나 저장하지 않습니다. 모든 분석은 사용자의 브라우저 내에서 안전하게 처리됩니다.</p>
+        </div>
+    </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
