@@ -1,78 +1,75 @@
-class LottoNumbers extends HTMLElement {
-    constructor() {
-        super();
-        this.attachShadow({ mode: 'open' });
-    }
+// Teachable Machine 모델 URL
+const URL = "https://teachablemachine.withgoogle.com/models/mgornywd/"; // 사용자의 모델 주소를 여기에 넣으세요 (기존 URL 패턴 참고)
 
-    connectedCallback() {
-        this.render();
-    }
+let model, webcam, labelContainer, maxPredictions;
 
-    render(numbers = []) {
-        this.shadowRoot.innerHTML = `
-        <style>
-            :host {
-                display: flex;
-                justify-content: center;
-                gap: 12px;
-                flex-wrap: wrap;
-            }
-            .lotto-number {
-                width: 50px;
-                height: 50px;
-                border-radius: 50%;
-                background-color: var(--ball-bg, #ffffff);
-                color: var(--ball-text, #212529);
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-size: 1.25rem;
-                font-weight: 700;
-                box-shadow: 0 4px 10px var(--ball-shadow, rgba(0, 0, 0, 0.1));
-                transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), background-color 0.3s;
-                border: 2px solid var(--primary-color);
-                animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-                opacity: 0;
-            }
-            @keyframes popIn {
-                from { transform: scale(0); opacity: 0; }
-                to { transform: scale(1); opacity: 1; }
-            }
-        </style>
-        ${numbers.map((num, i) => `<div class="lotto-number" style="animation-delay: ${i * 0.1}s">${num}</div>`).join('')}
-        `;
-    }
-
-    generateNumbers() {
-        const numbers = new Set();
-        while (numbers.size < 6) {
-            numbers.add(Math.floor(Math.random() * 45) + 1);
-        }
-        this.render(Array.from(numbers).sort((a, b) => a - b));
-    }
-}
-
-customElements.define('lotto-numbers', LottoNumbers);
-
-const lottoNumbersContainer = document.getElementById('lotto-numbers-container');
-const generateBtn = document.getElementById('generate-btn');
+// 테마 토글 로직
 const themeToggle = document.getElementById('theme-toggle');
-
-const lottoNumbers = document.createElement('lotto-numbers');
-lottoNumbersContainer.appendChild(lottoNumbers);
-
-generateBtn.addEventListener('click', () => {
-    lottoNumbers.generateNumbers();
-});
-
-// Theme Toggle Logic
 let isDark = false;
 themeToggle.addEventListener('click', () => {
     isDark = !isDark;
     document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
     themeToggle.textContent = isDark ? 'Light Mode' : 'Dark Mode';
-    
-    // Smooth transition for the balls if they exist
-    lottoNumbers.render(lottoNumbers.shadowRoot.querySelectorAll('.lotto-number').length ? 
-        Array.from(lottoNumbers.shadowRoot.querySelectorAll('.lotto-number')).map(el => el.textContent) : []);
 });
+
+// Disqus 연동
+(function() {
+    var d = document, s = d.createElement('script');
+    s.src = 'https://producttester-1.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+})();
+
+// Teachable Machine 초기화 및 실행
+async function init() {
+    const startBtn = document.getElementById('start-btn');
+    startBtn.style.display = 'none'; // 시작 버튼 숨기기
+    
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
+
+    model = await tmImage.load(modelURL, metadataURL);
+    maxPredictions = model.getTotalClasses();
+
+    const flip = true;
+    webcam = new tmImage.Webcam(300, 300, flip);
+    await webcam.setup();
+    await webcam.play();
+    window.requestAnimationFrame(loop);
+
+    const webcamContainer = document.getElementById("webcam-container");
+    webcamContainer.appendChild(webcam.canvas);
+    
+    labelContainer = document.getElementById("label-container");
+    for (let i = 0; i < maxPredictions; i++) {
+        const barWrapper = document.createElement("div");
+        barWrapper.className = "prediction-bar-wrapper";
+        barWrapper.innerHTML = `
+            <div class="label-name"></div>
+            <div class="bar-container">
+                <div class="bar"></div>
+            </div>
+            <div class="percentage"></div>
+        `;
+        labelContainer.appendChild(barWrapper);
+    }
+}
+
+async function loop() {
+    webcam.update();
+    await predict();
+    window.requestAnimationFrame(loop);
+}
+
+async function predict() {
+    const prediction = await model.predict(webcam.canvas);
+    for (let i = 0; i < maxPredictions; i++) {
+        const className = prediction[i].className;
+        const probability = (prediction[i].probability * 100).toFixed(0);
+        
+        const barWrapper = labelContainer.childNodes[i];
+        barWrapper.querySelector(".label-name").innerText = className;
+        barWrapper.querySelector(".bar").style.width = probability + "%";
+        barWrapper.querySelector(".percentage").innerText = probability + "%";
+    }
+}
